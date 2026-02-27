@@ -2,35 +2,63 @@ public class PalindromeChecker {
 
     public static void main(String[] args) {
 
-        String input = "racecar";
+        String input = "Level";
 
 
-        PalindromeService service = new PalindromeService();
+        PalindromeStrategy strategy = new StackStrategy();
 
-        boolean isPalindrome = service.checkPalindrome(input);
+
+        boolean result = strategy.check(input);
 
         System.out.println("Input : " + input);
-        System.out.println("Is Palindrome? : " + isPalindrome);
+        System.out.println("Is Palindrome? : " + result);
     }
 }
 
 
-class PalindromeService {
+interface PalindromeStrategy {
+    boolean check(String input);
+}
 
 
-    public boolean checkPalindrome(String input) {
+class StackStrategy implements PalindromeStrategy {
 
-        int start = 0;
-        int end = input.length() - 1;
+    @Override
+    public boolean check(String input) {
 
-        while (start <= end) {
+        java.util.Stack<Character> stack = new java.util.Stack<>();
 
-            if (input.charAt(start) != input.charAt(end)) {
+        for (char c : input.toLowerCase().toCharArray()) {
+            stack.push(c);
+        }
+
+        for (char c : input.toLowerCase().toCharArray()) {
+            if (c != stack.pop()) {
                 return false;
             }
+        }
 
-            start++;
-            end--;
+        return true;
+    }
+}
+
+
+class DequeStrategy implements PalindromeStrategy {
+
+    @Override
+    public boolean check(String input) {
+
+        java.util.Deque<Character> deque = new java.util.ArrayDeque<>();
+
+        for (char c : input.toLowerCase().toCharArray()) {
+            deque.addLast(c);
+        }
+
+        while (deque.size() > 1) {
+
+            if (deque.removeFirst() != deque.removeLast()) {
+                return false;
+            }
         }
 
         return true;
