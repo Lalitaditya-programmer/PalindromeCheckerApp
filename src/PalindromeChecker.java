@@ -4,14 +4,19 @@ public class PalindromeChecker {
 
         String input = "Level";
 
-
         PalindromeStrategy strategy = new StackStrategy();
 
+        long startTime = System.nanoTime();
 
         boolean result = strategy.check(input);
 
+        long endTime = System.nanoTime();
+
+        long executionTime = endTime - startTime;
+
         System.out.println("Input : " + input);
         System.out.println("Is Palindrome? : " + result);
+        System.out.println("Execution Time : " + executionTime + " ns");
     }
 }
 
@@ -34,29 +39,6 @@ class StackStrategy implements PalindromeStrategy {
 
         for (char c : input.toLowerCase().toCharArray()) {
             if (c != stack.pop()) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-}
-
-
-class DequeStrategy implements PalindromeStrategy {
-
-    @Override
-    public boolean check(String input) {
-
-        java.util.Deque<Character> deque = new java.util.ArrayDeque<>();
-
-        for (char c : input.toLowerCase().toCharArray()) {
-            deque.addLast(c);
-        }
-
-        while (deque.size() > 1) {
-
-            if (deque.removeFirst() != deque.removeLast()) {
                 return false;
             }
         }
